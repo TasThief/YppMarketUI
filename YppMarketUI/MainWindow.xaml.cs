@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YppMarketUI.Source;
 
 namespace YppMarketUI {
     /// <summary>
@@ -20,6 +21,7 @@ namespace YppMarketUI {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
+            Bridge.InitializeGameLinker();
         }
     }
 }
