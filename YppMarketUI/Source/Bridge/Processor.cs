@@ -7,9 +7,7 @@ using System.Threading;
 
 namespace YppMarketUI.Source {
     public static partial class Bridge {
-
-        private class Loader{
-
+        private class Processor{
             /// <summary> Main sinchronization primitive </summary>
             private AutoResetEvent taskControl = null;
 
@@ -28,14 +26,14 @@ namespace YppMarketUI.Source {
             /// <summary> Adds a new task to be processed </summary>
             /// <param name="task"> The task to be processed </param>
             public void EnqueueTask(Action task) {
-                if(IsRunning) {
+                if(IsRunning && task != null) {
                     taskQueue.Enqueue(task);
                     taskControl.Set();
                 }
             }
 
             /// <summary> Initialize the loader </summary>
-            public Loader() {
+            public Processor() {
                 taskQueue = new Queue<Action>();
                 taskControl = new AutoResetEvent(false);
                 new Thread(Main).Start();
@@ -46,12 +44,13 @@ namespace YppMarketUI.Source {
                 while(IsRunning) {
                     if(taskQueue.Count == 0)
                         taskControl.WaitOne();
-                    taskQueue.Dequeue()?.Invoke();
+                    if(taskQueue.Count > 0)
+                        taskQueue.Dequeue().Invoke();
                 }
             }
 
             /// <summary> On cleaning be sure to kill the loader main thread </summary>
-            ~Loader() {
+            ~Processor() {
                 Stop();
             }
 

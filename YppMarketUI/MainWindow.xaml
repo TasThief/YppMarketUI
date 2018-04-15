@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="299" Width="497"/>
+        <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="299" Width="497" Loaded="OnWindowLoad"><InlineUIContainer>
+                <Button x:Name="button" Content="Button" Width="75" Click="button_Click"/>
+            </InlineUIContainer></TextBlock>
 
     </Grid>
 </Window>
