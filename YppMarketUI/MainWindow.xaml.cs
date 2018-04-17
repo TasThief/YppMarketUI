@@ -22,16 +22,15 @@ namespace YppMarketUI {
 
         public MainWindow() {
             InitializeComponent();
+            Bridge.Initialize();
         }
 
         private void OnWindowLoad(object sender, RoutedEventArgs e) {
- 
-            Bridge.Initialize();
-
+            Bridge.PairWithGame();
         }
 
         private void button_Click(object sender, RoutedEventArgs e) {
-            Bridge.PairWithGame();
+            Bridge.CollectMarket();
         }
     }
 }

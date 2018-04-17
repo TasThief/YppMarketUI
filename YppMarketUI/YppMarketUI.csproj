@@ -89,6 +89,7 @@
     <Compile Include="Source\Bridge\Interface.cs" />
     <Compile Include="Source\Bridge\Linker.cs" />
     <Compile Include="Source\Bridge\Processor.cs" />
+    <Compile Include="Source\PeglegGuide\PeglegGuide.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

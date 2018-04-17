@@ -28,7 +28,7 @@ namespace YppMarketUI.Source {
         };
 
         /// <summary> One time initialization method </summary>
-        private static Collector GetCollector = collector;
+        private static Collector GetCollector() => collector;
 
         /// <summary> Push a async task onto the paralel thread </summary>
         private static void PushTask(Action task) => GetProcessor().EnqueueTask(task);
@@ -61,5 +61,8 @@ namespace YppMarketUI.Source {
 
         /// <summary> Return if linker is waiting for game to be paired </summary>
         public static bool IsLookingForGame => GetLinker().IsLookingForGame;
+
+        public static void CollectMarket() => GetCollector().CollectMarket();
+
     }
 }

@@ -3,30 +3,26 @@ using System.Management.Instrumentation;
 using System.Management;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
+//using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WindowsAccessBridgeInterop;
 using System.Runtime.InteropServices;
 using System.Threading;
-
-
-
-
-
 using System.Collections.Concurrent;
-
 using System.Configuration;
-
 using System.IO;
-
 using System.Reflection;
-
-
 
 namespace YppMarketUI.Source {
     public static partial class Bridge {
         private class Collector {
+
+            public readonly int[]
+                MAIN_SCREEN_PATH = { 0, 1, 1, 0, 0, 0, 1, 0 },
+                MARKET_PATH =      { 1, 0, 0, 1, 0, 0 },
+                INVENTORY_PATH =   { 0, 0, 0, 0, 0 },
+                RECIPE_PATH =      { 0, 1, 0, 0, 0, 0 };
 
             /// <summary> The access bridge </summary>
             public readonly AccessBridge accessBridge;
@@ -36,8 +32,6 @@ namespace YppMarketUI.Source {
             public Collector(AccessBridge accessBridge) {
                 this.accessBridge = accessBridge;
                 Bridge.OnGamePaired += OnGamePaired;
-           //     accessBridge = new AccessBridge();
-           //     accessBridge.Initialize();
             }
 
             ~Collector() {
@@ -46,6 +40,47 @@ namespace YppMarketUI.Source {
 
             private void OnGamePaired(IntPtr gameHwnd) {
                 window = accessBridge.CreateAccessibleWindow(gameHwnd);
+            }
+
+            public void CollectMarket() {
+
+                AccessibleContextNode marketList = FetchNode(MAIN_SCREEN_PATH, MARKET_PATH);
+
+                if(marketList != null) {
+                    Console.WriteLine("Test");
+                }
+
+            }
+            private  void CollectInventory() {
+
+            }
+            private void CollectBiddings() {
+
+            }
+            private void ColectRecipes() {
+                AccessibleContextNode recipeList = FetchNode(MAIN_SCREEN_PATH, RECIPE_PATH);
+                Console.WriteLine("test");
+            }
+            private void CollectPricing() {
+
+            }
+
+            private AccessibleContextNode FetchNode(params int[][] paths) {
+                AccessibleContextNode start = window;
+                foreach(int[] path in paths) 
+                    start = FetchNode(start, path);
+                return start;
+            }
+            private AccessibleContextNode FetchNode(Predicate<AccessibleNode> validate, params int[][] paths) {
+                AccessibleContextNode start = FetchNode(paths);
+                if(validate != null && !validate(start))
+                    start = null;
+                return start;
+            }
+            private AccessibleContextNode FetchNode(AccessibleContextNode start, int[] path) {
+                foreach(int target in path)
+                    start = start.FetchChildNode(target) as AccessibleContextNode;
+                return start;
             }
 
 
